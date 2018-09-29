@@ -36,7 +36,7 @@ export default {
           'iconPath': '/static/images/shouye00.png',
           'selectedIconPath': '/static/images/shouye01.png'
         }, {
-          'pagePath': 'pages/default/main',
+          'pagePath': 'pages/search/main',
           'text': '热搜',
           'iconPath': '/static/images/hot00.png',
           'selectedIconPath': '/static/images/hot01.png'

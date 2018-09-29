@@ -7,26 +7,26 @@
                 <img v-else src="/static/images/nikavatar.png" />
                 <!-- 头像图片的不同显示方式↑ isLogin的值为布尔型，进行逻辑判断 -->
             </div>
-            <button class="btn" @click="onload" v-show="!isLogin">微信登陆</button>
+            <button class="btn" open-type="getUserInfo" @click="onload" v-show="!isLogin">微信登陆</button>
             {{userInfo.nickName}}
             <!-- ↑取昵称 -->
             <div class="bang">
-                <img v-if="isBang" src="/static/images/banged.png">
-                <img v-else src="/static/images/unbang.png">
+                <img v-show="isBang" src="/static/images/banged.png">
+                <img v-show="!isBang" src="/static/images/unbang.png">
                 <!-- ↑绑定图片的不同显示方式 -->
             </div>
         </div>
-        <div class="middle" v-if="!isLogin">
-            <span> 您未登陆，不能正常使用下面功能</span>
+        <div class="middle" v-show="!isBang">
+            <span> 您未绑定，不能正常使用部分功能</span>
         </div>
-        <div class="middle" v-if="isLogin">
-            <span> 您已登陆，可以正常使用下面功能</span>
+        <div class="middle" v-show="isBang">
+            <span> 您已绑定，可以正常使用下面功能</span>
         </div>
         <div class="scroll">
             <scroll-view>
                 <ul>
                     <li v-for="(item,index) in issue" :key="index">
-                        <a :href="item.url+'?name='+userInfo.nickName">
+                        <a :href="item.url+'?name='+userInfo.nickName+'&isbang='+isBang">
                             <div class="issue-all">
                                 <div class="issue-list">
                                     <img :src="item.src">
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import fly from "@/utils/fly"
 export default {
     data() {
         return {
@@ -53,12 +54,16 @@ export default {
             isBang: false,
             issue: [
                 { 'url': '/pages/bind/main', 'src': '/static/images/bang.png', 'title': '绑定学号' },
-                { 'url': '/pages/star/main', 'src': '/static/images/star.png', 'title': '我的收藏' }
+                { 'url': '/pages/search/main', 'src': '/static/images/star.png', 'title': '我的收藏' }
             ],
         }
     },
     mounted() {
 
+    },
+
+    async onShow(){
+        this.checkisbang(this.userInfo.nickName);
     },
     methods: {
         onload() {
@@ -68,13 +73,28 @@ export default {
                         success: (res) => {
                             this.userInfo = res.userInfo;
                             this.isLogin = true;
-                            this.isBang = true;
-                        }
+                            this.checkisbang(this.userInfo.nickName);
+                        }   
                     })
                 }
             })
-        }
-    }
+        },
+        checkisbang(wxuser) {
+        let _this = this;
+        if(wxuser!=undefined){
+        fly
+            .post('hasbang.php', {
+                wxuser: wxuser
+            })
+            .then(res => {
+                console.log("返回的数据",res);
+                _this.isBang = res.data.isbang;
+            })
+            .catch(err => {
+                console.log("你又失败了");
+            })
+    }},
+    },
 }
 </script>
 
