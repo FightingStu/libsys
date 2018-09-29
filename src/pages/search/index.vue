@@ -15,10 +15,10 @@
                     <div class="right">
                         <div class="title">javascript 权威指南<img src="/static/images/hotdoor.png"></div>
                         <div class="detail">作者：韦舒松</div>
-                        <div class="detail">出版社：韦舒松</div>
-                        <div class="detail">评分：韦舒松</div>
-                        <div class="detail">索书号：韦舒松</div>
-                        <div class="detail">馆藏数量：韦舒松</div>
+                        <div class="detail">出版社：www.baidu.com</div>
+                        <div class="detail">评分：9.8</div>
+                        <div class="detail">索书号：0001</div>
+                        <div class="detail">馆藏数量：10000</div>
                     </div>
                 </div>
                 <div>
